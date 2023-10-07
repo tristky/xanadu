@@ -1,0 +1,134 @@
+<template>
+  <div>
+    <h2 style="color: black">Eco-Friendly Activities</h2>
+    <table id="ecoFriendlyActivitiesTable" class="auto-index">
+      <tr>
+        <th>Activity Description</th>
+        <th>Activity Type</th>
+        <th>Amount</th>
+        <th>Sustainability Points</th>
+        <th>Date</th>
+        <th>Options</th>
+      </tr>
+    </table>
+    <br /><br />
+    <button id="buttonToAddActivity">Add Activity</button>
+  </div>
+</template>
+
+<script>
+import firebaseApp from "@/firebase.js";
+import { getFirestore } from "firebase/firestore";
+import {
+  doc,
+  getDocs,
+  setDoc,
+  addDoc,
+  collection,
+  deleteDoc,
+  updateDoc,
+} from "firebase/firestore";
+
+const db = getFirestore(firebaseApp);
+
+export default {
+  mounted() {
+    async function display() {
+      const subcollectionRefs = [
+        collection(
+          db,
+          "Users/Green Rangers/TestingAcct/Eco-Friendly Activities/Water Conservation"
+        ),
+        collection(
+          db,
+          "Users/Green Rangers/TestingAcct/Eco-Friendly Activities/Energy Conservation"
+        ),
+        collection(
+          db,
+          "Users/Green Rangers/TestingAcct/Eco-Friendly Activities/Waste Reduction"
+        ),
+      ];
+      const promises = subcollectionRefs.map((ref) => getDocs(ref));
+      var allDocuments = [];
+      try {
+        const allSnapshots = await Promise.all(promises);
+
+        allSnapshots.forEach((snapshot) => {
+          snapshot.forEach((doc) => {
+            let document = doc.data();
+            document.id = doc.id;
+            allDocuments.push(document);
+          });
+        });
+
+        console.log("All documents:", allDocuments);
+      } catch (error) {
+        console.error("Error fetching documents:", error);
+      }
+      allDocuments.forEach((doc) => {
+        let activityId = doc.id;
+        let activityDescription = doc.activityDescription;
+        let activityType = doc.activityType;
+        let amount = doc.amount;
+        let sustainabilityPoints = doc.sustainabilityPoints;
+        let date = doc.date;
+        var units = "";
+        if (activityType == "Water Conservation") {
+          units = "L";
+        } else if (activityType == "Energy Conservation") {
+          units = "KwH";
+        } else if (activityType == "Waste Reduction") {
+          units = "Kg";
+        }
+
+        let table = document.getElementById("ecoFriendlyActivitiesTable");
+        let row = table.insertRow();
+
+        let cell1 = row.insertCell(0);
+        let cell2 = row.insertCell(1);
+        let cell3 = row.insertCell(2);
+        let cell4 = row.insertCell(3);
+        let cell5 = row.insertCell(4);
+        let cell6 = row.insertCell(5);
+
+        cell1.innerHTML = activityDescription;
+        cell2.innerHTML = activityType;
+        cell3.innerHTML = amount.toString() + units;
+        cell4.innerHTML = sustainabilityPoints;
+        cell5.innerHTML = date;
+        cell6.innerHTML = "";
+
+        let deleteButton = document.createElement("button");
+        deleteButton.id = document.id;
+        deleteButton.className = "bwt";
+        deleteButton.innerHTML = "X";
+
+        cell6.appendChild(deleteButton);
+        deleteButton.onclick = function () {
+          deleteActivity(activityType, activityId);
+        };
+      });
+    }
+    display();
+
+    async function deleteActivity(activityType, activityId) {
+      alert("Deleting activity!");
+      await deleteDoc(
+        doc(
+          db,
+          "Users/Green Rangers/TestingAcct/Eco-Friendly Activities/" +
+            activityType +
+            "/" +
+            activityId
+        )
+      );
+      console.log("Document successfully deleted!");
+      let tb = document.getElementById("ecoFriendlyActivitiesTable");
+      while (tb.rows.length > 1) {
+        tb.deleteRow(1);
+      }
+      display();
+    }
+  },
+};
+</script>
