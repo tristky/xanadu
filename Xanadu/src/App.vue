@@ -1,7 +1,8 @@
 <template>
   <div>
     <XanaduTitle />
-    <AddActivity @added="updateTable" />
+    <ActivityChart :key="refreshComp" />
+    <AddActivity @added="refresh" />
     <ActivityTable :key="refreshComp" />
   </div>
 </template>
@@ -10,6 +11,7 @@
 import XanaduTitle from "./components/XanaduTitle.vue";
 import AddActivity from "./components/AddActivityBox.vue";
 import ActivityTable from "./components/ActivityTable.vue";
+import ActivityChart from "./components/ActivityChart.vue";
 
 export default {
   name: "Xanadu",
@@ -17,7 +19,7 @@ export default {
     XanaduTitle,
     AddActivity,
     ActivityTable,
-    ActivityTable,
+    ActivityChart,
   },
 
   data() {
@@ -26,7 +28,7 @@ export default {
     };
   },
   methods: {
-    updateTable() {
+    refresh() {
       this.refreshComp += 1;
     },
   },

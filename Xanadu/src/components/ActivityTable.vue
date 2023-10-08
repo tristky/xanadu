@@ -98,8 +98,17 @@ export default {
         cell5.innerHTML = date;
         cell6.innerHTML = "";
 
+        // let updateButton = document.createElement("button");
+        // updateButton.id = document.id+"_update";
+        // updateButton.className = "bwt";
+        // updateButton.innerHTML = "update";
+        // cell6.appendChild(updateButton);
+        // updateButton.onclick = function () {
+        //   editActivity(activityType, activityId);
+        // };
+
         let deleteButton = document.createElement("button");
-        deleteButton.id = document.id;
+        deleteButton.id = document.id + "_delete";
         deleteButton.className = "bwt";
         deleteButton.innerHTML = "X";
 
