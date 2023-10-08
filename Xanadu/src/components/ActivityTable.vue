@@ -65,6 +65,7 @@ export default {
       } catch (error) {
         console.error("Error fetching documents:", error);
       }
+      let index = 1;
       allDocuments.forEach((doc) => {
         let activityId = doc.id;
         let activityDescription = doc.activityDescription;
@@ -82,7 +83,7 @@ export default {
         }
 
         let table = document.getElementById("ecoFriendlyActivitiesTable");
-        let row = table.insertRow();
+        let row = table.insertRow(index);
 
         let cell1 = row.insertCell(0);
         let cell2 = row.insertCell(1);
@@ -116,6 +117,7 @@ export default {
         deleteButton.onclick = function () {
           deleteActivity(activityType, activityId);
         };
+        index += 1;
       });
     }
     display();
