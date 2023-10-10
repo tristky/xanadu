@@ -55,6 +55,7 @@ export default {
       "Waste Reduction",
     ]) {
       let points = await getActivityChartData(category);
+      console.log(points);
       this.activityData[category] = points;
     }
     console.log(this.activityData);
