@@ -1,7 +1,7 @@
 <template>
   <div>
     <ActivityTable :activityData="activityData" />
-    <AddActivityBox />
+    <AddActivityBox @added="added" />
   </div>
 </template>
 
@@ -16,6 +16,19 @@ export default {
   },
   props: {
     activityData: Object,
+  },
+  watch: {
+    activityData(data) {
+      console.log(
+        "activityData has been passed from Dashboard.vue to EcoFriendlyActivities.vue. This is activityDate:"
+      );
+      console.log(data);
+    },
+  },
+  methods: {
+    added() {
+      this.$emit("added");
+    },
   },
 };
 </script>

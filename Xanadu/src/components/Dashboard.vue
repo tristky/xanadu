@@ -2,7 +2,11 @@
   <div>
     <Graphs />
     <MilestoneProgress />
-    <EcoFriendlyActivities :activityData="activityData" />
+    <EcoFriendlyActivities
+      :activityData="activityData"
+      @added="refresh"
+      :key="refreshComp"
+    />
   </div>
 </template>
 
@@ -24,7 +28,13 @@ export default {
   data() {
     return {
       activityData: null,
+      refreshComp: 0,
     };
+  },
+  methods: {
+    refresh() {
+      this.refreshComp += 1;
+    },
   },
   async mounted() {
     async function getActivityChartData(category) {
@@ -65,7 +75,9 @@ export default {
       ad[category] = points;
     }
     this.activityData = ad;
-    console.log("activityData is:");
+    console.log(
+      "activityData has loaded in Dashboard.vue. Here is activityDate:"
+    );
     console.log(this.activityData);
   },
 };

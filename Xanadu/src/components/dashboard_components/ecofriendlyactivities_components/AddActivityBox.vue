@@ -113,7 +113,7 @@ export default {
       // bear in mind that you have to check whether the Amount field is really a number. But let's worry about that later on
       // Also keep the description to less than 50 words
       // also make sure need check if any fields are empty, dont add.
-      console.log("Saving to Firestore...");
+      console.log("Adding Eco-friendly Activity to Firestore...");
 
       let activityType = this.activityType;
       let activityDescription = this.activityDescription;
@@ -125,7 +125,7 @@ export default {
       console.log(amount);
       let sustainabilityPoints = (amount / 10).toFixed(3);
 
-      alert("Saving you Eco Friendly Activity Data!");
+      alert("Saving your Eco-Friendly Activity Data!");
       try {
         const docRef = await addDoc(
           collection(
@@ -141,7 +141,10 @@ export default {
             date: "Not yet done",
           }
         );
-        console.log("Document written with ID: ", docRef.id);
+        console.log(
+          "Eco-friendly activity Document added with ID: ",
+          docRef.id
+        );
       } catch (error) {
         console.error("Error adding document: ", error);
       }
@@ -150,7 +153,7 @@ export default {
       this.amount = "";
       document.getElementById("addEcoFriendlyActivity").reset();
       this.$emit("added");
-      console.log("Done!");
+      console.log("Input box resetted, 'added' was emitted");
     },
   },
 };

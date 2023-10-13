@@ -39,43 +39,46 @@ export default {
   data() {
     return {
       activities: null,
-      // deletedRow: true,
     };
   },
   mounted() {
+    console.log(this.activityData);
     async function display() {
-      const subcollectionRefs = [
-        collection(
-          db,
-          "Users/Green Rangers/TestingAcct/Eco-Friendly Activities/Water Conservation"
-        ),
-        collection(
-          db,
-          "Users/Green Rangers/TestingAcct/Eco-Friendly Activities/Energy Conservation"
-        ),
-        collection(
-          db,
-          "Users/Green Rangers/TestingAcct/Eco-Friendly Activities/Waste Reduction"
-        ),
-      ];
-      const promises = subcollectionRefs.map((ref) => getDocs(ref));
-      var allDocuments = [];
-      try {
-        const allSnapshots = await Promise.all(promises);
+      // const subcollectionRefs = [
+      //   collection(
+      //     db,
+      //     "Users/Green Rangers/TestingAcct/Eco-Friendly Activities/Water Conservation"
+      //   ),
+      //   collection(
+      //     db,
+      //     "Users/Green Rangers/TestingAcct/Eco-Friendly Activities/Energy Conservation"
+      //   ),
+      //   collection(
+      //     db,
+      //     "Users/Green Rangers/TestingAcct/Eco-Friendly Activities/Waste Reduction"
+      //   ),
+      // ];
+      // const promises = subcollectionRefs.map((ref) => getDocs(ref));
+      // var allDocuments = [];
+      // try {
+      //   const allSnapshots = await Promise.all(promises);
 
-        allSnapshots.forEach((snapshot) => {
-          snapshot.forEach((doc) => {
-            let document = doc.data();
-            document.id = doc.id;
-            allDocuments.push(document);
-          });
-        });
+      //   allSnapshots.forEach((snapshot) => {
+      //     snapshot.forEach((doc) => {
+      //       let document = doc.data();
+      //       document.id = doc.id;
+      //       allDocuments.push(document);
+      //     });
+      //   });
 
-        console.log("All documents for activity table:", allDocuments);
-        // this.activities = 1;
-      } catch (error) {
-        console.error("Error fetching documents:", error);
-      }
+      //   console.log("All documents for activity table:", allDocuments);
+      //   // this.activities = 1;
+      // } catch (error) {
+      //   console.error("Error fetching documents:", error);
+      // }
+      // let allDocuments = this.activityData;
+
+      helpla();
       let index = 1;
 
       allDocuments.forEach((doc) => {
