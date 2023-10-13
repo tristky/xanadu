@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ActivityTable />
+    <ActivityTable :activityData="activityData" />
     <AddActivityBox />
   </div>
 </template>
@@ -13,6 +13,9 @@ export default {
   components: {
     AddActivityBox,
     ActivityTable,
+  },
+  props: {
+    activityData: Object,
   },
 };
 </script>
