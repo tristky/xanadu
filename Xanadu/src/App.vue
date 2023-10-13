@@ -3,7 +3,7 @@
     <XanaduTitle />
     <Graphs :key="refreshComp" />
     <AddActivity @added="refresh" />
-    <ActivityTable :key="refreshComp" />
+    <ActivityTable :key="refreshComp" @deletedActivity="refresh" />
   </div>
 </template>
 

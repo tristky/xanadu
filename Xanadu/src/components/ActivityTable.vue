@@ -32,6 +32,13 @@ import {
 const db = getFirestore(firebaseApp);
 
 export default {
+  emits: ["deletedActivity"],
+  data() {
+    return {
+      activities: null,
+      // deletedRow: true,
+    };
+  },
   mounted() {
     async function display() {
       const subcollectionRefs = [
@@ -61,11 +68,13 @@ export default {
           });
         });
 
-        console.log("All documents:", allDocuments);
+        console.log("All documents for activity table:", allDocuments);
+        // this.activities = 1;
       } catch (error) {
         console.error("Error fetching documents:", error);
       }
       let index = 1;
+
       allDocuments.forEach((doc) => {
         let activityId = doc.id;
         let activityDescription = doc.activityDescription;
@@ -84,6 +93,7 @@ export default {
 
         let table = document.getElementById("ecoFriendlyActivitiesTable");
         let row = table.insertRow(index);
+        row.id = activityId;
 
         let cell1 = row.insertCell(0);
         let cell2 = row.insertCell(1);
@@ -115,12 +125,47 @@ export default {
 
         cell6.appendChild(deleteButton);
         deleteButton.onclick = function () {
-          deleteActivity(activityType, activityId);
+          // deleteActivity(activityType, activityId);
+          deleteActivity.bind(this)(activityType, activityId);
+          console.log(this.activity);
         };
         index += 1;
       });
     }
-    display();
+
+    async function getActivities() {
+      const subcollectionRefs = [
+        collection(
+          db,
+          "Users/Green Rangers/TestingAcct/Eco-Friendly Activities/Water Conservation"
+        ),
+        collection(
+          db,
+          "Users/Green Rangers/TestingAcct/Eco-Friendly Activities/Energy Conservation"
+        ),
+        collection(
+          db,
+          "Users/Green Rangers/TestingAcct/Eco-Friendly Activities/Waste Reduction"
+        ),
+      ];
+      const promises = subcollectionRefs.map((ref) => getDocs(ref));
+      var allDocuments = [];
+      try {
+        const allSnapshots = await Promise.all(promises);
+
+        allSnapshots.forEach((snapshot) => {
+          snapshot.forEach((doc) => {
+            let document = doc.data();
+            document.id = doc.id;
+            allDocuments.push(document);
+          });
+        });
+        // this.activities = 1;
+      } catch (error) {
+        console.error("Error fetching documents:", error);
+      }
+      return allDocuments;
+    }
 
     async function deleteActivity(activityType, activityId) {
       alert("Deleting activity!");
@@ -133,13 +178,36 @@ export default {
             activityId
         )
       );
+
       console.log("Document successfully deleted!");
       let tb = document.getElementById("ecoFriendlyActivitiesTable");
-      while (tb.rows.length > 1) {
-        tb.deleteRow(1);
+      // while (tb.rows.length > 1) {
+      //   tb.deleteRow(1);
+      // }
+      // tb.deleteRow();
+      // display();
+      for (let i = 1; i < tb.rows.length; i++) {
+        if (tb.rows[i].id === activityId) {
+          tb.deleteRow(i);
+          break; // No need to continue searching
+        }
       }
-      display();
+      this.activities = await getActivities();
     }
+    this.activities = getActivities();
+    display();
   },
+  methods: {
+    emitDeletedActivity() {
+      this.$emit("deletedActivity");
+    },
+  },
+  // watch: {
+  //   deletedRow() {
+  //     console.log("Watcher works");
+  //     this.emitDeletedActivity();
+  //     // console.log("hi");
+  //   },
+  // },
 };
 </script>
