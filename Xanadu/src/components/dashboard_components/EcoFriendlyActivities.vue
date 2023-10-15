@@ -1,6 +1,9 @@
 <template>
   <div>
-    <ActivityTable :activityData="activityData" />
+    <ActivityTable
+      :activityData="activityData"
+      @deletedActivity="deletedActivity"
+    />
     <AddActivityBox @added="added" />
   </div>
 </template>
@@ -20,14 +23,21 @@ export default {
   watch: {
     activityData(data) {
       console.log(
-        "activityData has been passed from Dashboard.vue to EcoFriendlyActivities.vue. This is activityDate:"
+        "activityData has been passed from Dashboard.vue to EcoFriendlyActivities.vue. This is activityData:"
       );
       console.log(data);
     },
   },
   methods: {
+    deletedActivity() {
+      console.log("emit of deletedActivity from AddActivityBox received!");
+      this.$emit("deletedActivity");
+      console.log("EcoFriendlyActivities have emitted 'deletedActivity'!");
+    },
     added() {
+      console.log("emit of added from AddActivityBox received!");
       this.$emit("added");
+      console.log("EcoFriendlyActivities have emitted 'added'!");
     },
   },
 };
