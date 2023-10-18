@@ -1,3 +1,13 @@
 <template>
-  <h1>This is the Marketplace</h1>
+  <Marketplace />
 </template>
+
+<script>
+import Marketplace from "../components/Marketplace/Dashboard.vue";
+
+export default {
+  components: {
+    Marketplace,
+  },
+};
+</script>
