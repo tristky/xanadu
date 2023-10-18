@@ -50,7 +50,7 @@ export default {
             },
         async AddProduct() {
             alert("Adding new product: "+ this.Title)
-            await setDoc(doc(db,this.username,this.Title),{
+            await setDoc(doc(db,'Eco-Entrepreneur',this.username,'Products',this.Title),{
                 title: this.Title,
                 shortdesc: this.ShortDesc,
                 shipping: this.Shipping,
