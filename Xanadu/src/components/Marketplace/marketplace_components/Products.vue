@@ -62,7 +62,8 @@ export default {
     },
     async mounted() {
         const fbproducts = []
-        let alldocs = await getDocs(collection(db,'Eco-Entreprenur',this.username, 'Products'))
+        let alldocs = await getDocs(collection(db,'Eco-Entrepreneur',this.username,'Products'))
+        console.log(alldocs)
         alldocs.forEach((doc)=> {
             const product ={
                 title : doc.data().title,
