@@ -1,5 +1,5 @@
 <script>
-import firebaseApp from '../firebase.js';
+import firebaseApp from "@/firebase.js";
 import { getFirestore} from "firebase/firestore";
 import { setDoc, getDocs, doc, deleteDoc, getDoc} from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL, uploadBytesResumable, getStorage } from "firebase/storage";

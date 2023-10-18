@@ -1,6 +1,6 @@
 <template>
     <div class = "products">
-    <img class="productimage" src="../assets/products page.png"> <br> <br>
+    <img class="productimage" src="@/assets/products page.png"> <br> <br>
     <RouterLink to ="AddProduct"> Add Product </RouterLink>
     <div v-for="product in products" class="productlist">
         <div class="productcard">
@@ -62,7 +62,7 @@ export default {
     },
     async mounted() {
         const fbproducts = []
-        let alldocs = await getDocs(collection(db,this.username))
+        let alldocs = await getDocs(collection(db,'Eco-Entreprenur',this.username, 'Products'))
         alldocs.forEach((doc)=> {
             const product ={
                 title : doc.data().title,
