@@ -46,7 +46,7 @@
 </style>
 
 <script>
-import firebaseApp from '../firebase.js';
+import firebaseApp from "@/firebase.js";
 import { RouterLink } from 'vue-router';
 import { getFirestore, setDoc, getDocs, doc, deleteDoc, getDoc, onSnapshot, collection} from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL, uploadBytesResumable, getStorage } from "firebase/storage";

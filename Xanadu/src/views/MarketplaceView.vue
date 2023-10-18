@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Marketplace from "../components/Marketplace/Dashboard.vue";
+import Marketplace from "../components/Marketplace/Marketplace.vue";
 
 export default {
   components: {

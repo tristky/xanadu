@@ -10,10 +10,10 @@
                 <RouterLink to ="/">Dashboard</RouterLink>
             </li>
             <li> 
-                <RouterLink to ="Marketplace">Marketplace</RouterLink>
+                <RouterLink to ="marketplace">Marketplace</RouterLink>
             </li>
             <li> 
-                <RouterLink to ="Forum">Forum</RouterLink>
+                <RouterLink to ="forum">Forum</RouterLink>
             </li>
         </ul>
     </div>
