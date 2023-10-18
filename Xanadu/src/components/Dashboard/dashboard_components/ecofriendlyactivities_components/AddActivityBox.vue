@@ -42,7 +42,7 @@
                 v-model.number.lazy="amount"
                 placeholder="Amount"
                 style="display: inline-flex"
-                id="acitivityAmount"
+                id="activityAmount"
               />
               <h4
                 v-show="activityTypeWasteReduction"
@@ -64,6 +64,8 @@
               </h4>
             </div>
             <br />
+            <DatePicker></DatePicker>
+            <br />
             <button
               id="addActivityButton"
               type="submit"
@@ -80,11 +82,16 @@
 
 <script>
 import firebaseApp from "@/firebase.js";
+// import { VDatePicker } from "vuetify/labs/VDatePicker";
+// import DatePicker from "./DatePicker.vue";
 import { getFirestore } from "firebase/firestore";
 import { doc, setDoc, addDoc, collection } from "firebase/firestore";
 const db = getFirestore(firebaseApp);
 
 export default {
+  // components: {
+  //   DatePicker,
+  // },
   data() {
     return {
       showForm: false,
