@@ -1,69 +1,80 @@
 <template>
   <div class="container">
-    <form id="addEcoFriendlyActivity">
-      <h2 style="color: black">Add Activity</h2>
-      <div class="formli" id="addActivity">
-        <!-- <label for="activityType">Activity Type:</label> -->
-        <div id="addingActivityType">
-          <select v-model="activityType" id="activityType">
-            <!-- <option value="" disabled selected>Activity Type</option> -->
-            <option
-              v-if="!activityType"
-              value=""
-              disabled
-              selected
-              style="display: none"
+    <button @click="toggleForm">Add Activity</button>
+
+    <div v-if="showForm" class="popup">
+      <div class="popup-content">
+        <button @click="toggleForm">X</button>
+        <form id="addEcoFriendlyActivity">
+          <h2 style="color: black">Add Activity</h2>
+          <div class="formli" id="addActivity">
+            <!-- <label for="activityType">Activity Type:</label> -->
+            <div id="addingActivityType">
+              <select v-model="activityType" id="activityType">
+                <!-- <option value="" disabled selected>Activity Type</option> -->
+                <option
+                  v-if="!activityType"
+                  value=""
+                  disabled
+                  selected
+                  style="display: none"
+                >
+                  Activity Type
+                </option>
+                <option v-for="activity in activityTypes" :key="activity">
+                  {{ activity }}
+                </option>
+              </select>
+            </div>
+            <br />
+            <div id="addingActivityDescription">
+              <label for="activityDescription">Activity Description:</label>
+              <br />
+              <textarea
+                v-model.lazy="activityDescription"
+                id="activityDescription"
+                placeholder="Activity Description"
+              ></textarea>
+            </div>
+            <div id="addingActivityAmount">
+              <input
+                type="text"
+                v-model.number.lazy="amount"
+                placeholder="Amount"
+                style="display: inline-flex"
+                id="acitivityAmount"
+              />
+              <h4
+                v-show="activityTypeWasteReduction"
+                style="display: inline-flex; color: black"
+              >
+                &nbsp;Kg
+              </h4>
+              <h4
+                v-show="activityTypeWaterConservation"
+                style="display: inline-flex; color: black"
+              >
+                &nbsp;Litres
+              </h4>
+              <h4
+                v-show="activityTypeEnergyConservation"
+                style="display: inline-flex; color: black"
+              >
+                &nbsp;KwH
+              </h4>
+            </div>
+            <br />
+            <button
+              id="addActivityButton"
+              type="submit"
+              @click.prevent="savetofs"
             >
-              Activity Type
-            </option>
-            <option v-for="activity in activityTypes" :key="activity">
-              {{ activity }}
-            </option>
-          </select>
-        </div>
-        <br />
-        <div id="addingActivityDescription">
-          <label for="activityDescription">Activity Description:</label>
-          <br />
-          <textarea
-            v-model.lazy="activityDescription"
-            id="activityDescription"
-            placeholder="Activity Description"
-          ></textarea>
-        </div>
-        <div id="addingActivityAmount">
-          <input
-            type="text"
-            v-model.number.lazy="amount"
-            placeholder="Amount"
-            style="display: inline-flex"
-            id="acitivityAmount"
-          />
-          <h4
-            v-show="activityTypeWasteReduction"
-            style="display: inline-flex; color: black"
-          >
-            &nbsp;Kg
-          </h4>
-          <h4
-            v-show="activityTypeWaterConservation"
-            style="display: inline-flex; color: black"
-          >
-            &nbsp;Litres
-          </h4>
-          <h4
-            v-show="activityTypeEnergyConservation"
-            style="display: inline-flex; color: black"
-          >
-            &nbsp;KwH
-          </h4>
-        </div>
-        <br />
-        <button id="addActivityButton" type="submit" @click.prevent="savetofs">
-          Add
-        </button>
+              Add
+            </button>
+          </div>
+        </form>
       </div>
-    </form>
+    </div>
   </div>
 </template>
 
@@ -76,6 +87,7 @@ const db = getFirestore(firebaseApp);
 export default {
   data() {
     return {
+      showForm: false,
       activityTypes: [
         "Water Conservation",
         "Energy Conservation",
@@ -109,6 +121,9 @@ export default {
     },
   },
   methods: {
+    toggleForm() {
+      this.showForm = !this.showForm;
+    },
     async savetofs() {
       // bear in mind that you have to check whether the Amount field is really a number. But let's worry about that later on
       // Also keep the description to less than 50 words
@@ -159,7 +174,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .container {
   color: darkgrey;
 }
@@ -168,5 +183,19 @@ button {
   color: white;
   font-weight: bold;
   /* width: 100%; */
+}
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.popup-content {
+  text-align: center;
 }
 </style>
