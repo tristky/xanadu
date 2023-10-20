@@ -16,11 +16,20 @@ import ColumnGroup from "primevue/columngroup";
 import Row from "primevue/row";
 import Dropdown from "primevue/dropdown";
 import Tag from "primevue/tag";
+import InputNumber from "primevue/inputnumber";
+import TextArea from "primevue/textarea";
+import DynamicDialog from "primevue/dynamicdialog";
+import DialogService from "primevue/dialogservice";
 
 const app = createApp(App);
+
 app.use(PrimeVue);
 app.use(ToastService);
+app.use(DialogService);
 
+app.component("DynamicDialog", DynamicDialog);
+app.component("TextArea", TextArea);
+app.component("InputNumber", InputNumber);
 app.component("Tag", Tag);
 app.component("Dropdown", Dropdown);
 app.component("DataTable", DataTable);

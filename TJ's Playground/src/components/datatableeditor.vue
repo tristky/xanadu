@@ -9,11 +9,11 @@
       tableClass="editable-cells-table"
       tableStyle="min-width: 50rem"
     >
-      <Column field="code" header="Code" style="width: 20%">
+      <!-- <Column field="code" header="Code" style="width: 20%">
         <template #editor="{ data, field }">
           <InputText v-model="data[field]" />
         </template>
-      </Column>
+      </Column> -->
       <Column field="name" header="Name" style="width: 20%">
         <template #editor="{ data, field }">
           <InputText v-model="data[field]" />
@@ -40,7 +40,8 @@
           />
         </template>
       </Column>
-      <Column field="price" header="Price" style="width: 20%">
+
+      <!-- <Column field="price" header="Price" style="width: 20%">
         <template #body="{ data, field }">
           {{ formatCurrency(data[field]) }}
         </template>
@@ -52,7 +53,7 @@
             locale="en-US"
           />
         </template>
-      </Column>
+      </Column> -->
       <Column
         :rowEditor="true"
         style="width: 10%; min-width: 8rem"
@@ -68,48 +69,70 @@ export default {
     return {
       products: [
         {
-          id: "1000",
-          code: "f230fh0g3",
           name: "Bamboo Watch",
-          description: "Product Description",
-          image: "bamboo-watch.jpg",
-          price: 65,
-          category: "Accessories",
-          quantity: 24,
           inventoryStatus: "INSTOCK",
-          rating: 5,
+          id: "1000",
+          // code: "f230fh0g3",
+          // description: "Product Description",
+          // image: "bamboo-watch.jpg",
+          // price: 65,
+          // category: "Accessories",
+          // quantity: 24,
+          // rating: 5,
         },
         {
-          id: "2000",
-          code: "f230f",
           name: "Bamboo",
-          description: "Product",
-          image: "bamboo-watch",
-          price: 60,
-          category: "Accessories",
-          quantity: 2,
           inventoryStatus: "OUTOFSTOCK",
-          rating: 7,
+          id: "2000",
+          // code: "f230f",
+          // description: "Product",
+          // image: "bamboo-watch",
+          // price: 60,
+          // category: "Accessories",
+          // quantity: 2,
+          // rating: 7,
         },
         {
-          id: "3000",
-          code: "f2",
           name: "Bah",
-          description: "Description",
-          image: "bamboo-watch.jpg",
-          price: 5,
-          category: "Access",
-          quantity: 94,
           inventoryStatus: "LOWSTOCK",
-          rating: 1,
+          id: "3000",
+          // code: "f2",
+          // description: "Description",
+          // image: "bamboo-watch.jpg",
+          // price: 5,
+          // category: "Access",
+          // quantity: 94,
+          // rating: 1,
         },
       ],
       editingRows: [],
       statuses: [
-        { label: "In Stock", value: "INSTOCK" },
-        { label: "Low Stock", value: "LOWSTOCK" },
-        { label: "Out of Stock", value: "OUTOFSTOCK" },
+        { label: "Water Conservation", value: "Water Conservation" },
+        { label: "Energy Conservation", value: "Energy Conservation" },
+        { label: "Waste Reduction", value: "Waste Reduction" },
       ],
+      // products: [
+      //   {
+      //     activityDescription: "water",
+      //     activityType: "Water Conservation",
+      //     amount: "20",
+      //   },
+      //   {
+      //     activityDescription: "energy",
+      //     activityType: "energy Conservation",
+      //     amount: "10",
+      //   },
+      //   {
+      //     activityDescription: "water1",
+      //     activityType: "Water Conservation",
+      //     amount: "7",
+      //   },
+      //   {
+      //     activityDescription: "waste",
+      //     activityType: "Waste Reduction",
+      //     amount: "5",
+      //   },
+      // ],
     };
   },
   methods: {
