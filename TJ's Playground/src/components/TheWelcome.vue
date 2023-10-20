@@ -15,10 +15,70 @@
     <br />
     <Button label="Show Date" @click="showDate"> </Button>
     <DataTable :value="products" tableStyle="min-width: 50rem">
-      <Column field="code" header="Code"></Column>
-      <Column field="name" header="Name"></Column>
-      <Column field="category" header="Category"></Column>
-      <Column field="quantity" header="Quantity"></Column>
+      <Column field="activityDescription" header="Description"></Column>
+      <Column field="activityType" header="Type"></Column>
+      <Column field="amount" header="Amount"></Column>
+    </DataTable>
+
+    <br /><br />
+
+    <DataTable
+      v-model:editingRows="editingRows"
+      :value="products"
+      tableStyle="min-width: 50rem"
+      editMode="row"
+      dataKey="id"
+      @row-edit-save="onRowEditSave"
+      tableClass="editable-cells-table"
+    >
+      <Column
+        field="activityDescription"
+        header="Description"
+        style="width: 20%"
+      >
+        <template #editor="{ data, field }">
+          <InputText v-model="data[field]" />
+        </template>
+      </Column>
+      <Column field="activityType" header="Type" style="width: 20%">
+        <template #editor="{ data, field }">
+          <Dropdown
+            v-model="data[field]"
+            :options="statuses"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Select a Status"
+          >
+            <template #option="slotProps">
+              <Tag
+                :value="slotProps.option.value"
+                :severity="getStatusLabel(slotProps.option.value)"
+              />
+            </template>
+          </Dropdown>
+        </template>
+        <!-- <template #body="slotProps">
+          <Tag :value="slotProps.data.activityType" />
+        </template> -->
+      </Column>
+      <Column field="amount" header="Amount" style="width: 20%">
+        <!-- <template #body="{ data, field }">
+          {{ formatCurrency(data[field]) }}
+        </template>
+        <template #editor="{ data, field }">
+          <InputNumber
+            v-model="data[field]"
+            mode="currency"
+            currency="USD"
+            locale="en-US"
+          />
+        </template> -->
+      </Column>
+      <Column
+        :rowEditor="true"
+        style="width: 10%; min-width: 8rem"
+        bodyStyle="text-align:center"
+      ></Column>
     </DataTable>
   </div>
 </template>
@@ -36,47 +96,66 @@ export default {
     showDate() {
       console.log(this.date);
     },
+    onRowEditSave(event) {
+      let { newData, index } = event;
+      this.products[index] = newData;
+    },
+    // getStatusLabel(status) {
+    //         switch (status) {
+    //             case 'INSTOCK':
+    //                 return 'success';
+
+    //             case 'LOWSTOCK':
+    //                 return 'warning';
+
+    //             case 'OUTOFSTOCK':
+    //                 return 'danger';
+
+    //             default:
+    //                 return null;
+    //         }
+    //     },
   },
 
   data() {
     return {
       text: null,
       date: "",
-      products: [
-        { code: 1, name: "A", category: "i", quantity: "5" },
-        { code: 2, name: "B", category: "ii", quantity: "6" },
-        { code: 3, name: "C", category: "iii", quantity: "7" },
-        { code: 4, name: "D", category: "iv", quantity: "8" },
+      editingRows: [],
+      statuses: [
+        { label: "Water Conservation", value: "Water Conservation" },
+        { label: "Energy Conservation", value: "Energy Conservation" },
+        { label: "Waste Reduction", value: "Waste Reduction" },
       ],
-      // products: {
-      //   "code": [1, 2, 3, 4],
-      //   "name": ["A", "B", "C", "D"],
-      //   "category": ["i", "ii", "iii", "iv"],
-      //   "quantity": [5, 6, 7, 8],
-      // },
       // products: [
-      //   [1, 2, 3, 4],
-      //   ["A", "B", "C", "D"],
-      //   ["i", "ii", "iii", "iv"],
-      //   [5, 6, 7, 8],
+      //   { code: 1, name: "A", category: "i", quantity: "5" },
+      //   { code: 2, name: "B", category: "ii", quantity: "6" },
+      //   { code: 3, name: "C", category: "iii", quantity: "7" },
+      //   { code: 4, name: "D", category: "iv", quantity: "8" },
       // ],
+      products: [
+        {
+          activityDescription: "water",
+          activityType: "Water Conservation",
+          amount: "20",
+        },
+        {
+          activityDescription: "energy",
+          activityType: "energy Conservation",
+          amount: "10",
+        },
+        {
+          activityDescription: "water1",
+          activityType: "Water Conservation",
+          amount: "7",
+        },
+        {
+          activityDescription: "waste",
+          activityType: "Waste Reduction",
+          amount: "5",
+        },
+      ],
     };
   },
 };
 </script>
-
-<!-- <script setup>
-
-import { ref } from "vue";
-import { useToast } from 'primevue/usetoast';
-
-const text = ref();
-const toast = useToast();
-const greet = () => {
-      toast.add({
-        severity: "success",
-        summary: "PrimeTime",
-        detail: text.value,
-      });
-    };
-  </script> -->

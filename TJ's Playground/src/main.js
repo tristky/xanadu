@@ -14,11 +14,15 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import ColumnGroup from "primevue/columngroup";
 import Row from "primevue/row";
+import Dropdown from "primevue/dropdown";
+import Tag from "primevue/tag";
 
 const app = createApp(App);
 app.use(PrimeVue);
 app.use(ToastService);
 
+app.component("Tag", Tag);
+app.component("Dropdown", Dropdown);
 app.component("DataTable", DataTable);
 app.component("Column", Column);
 app.component("ColumnGroup", ColumnGroup);
