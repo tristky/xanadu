@@ -1,6 +1,6 @@
 <script>
 import { useDialog } from "primevue/usedialog";
-import AddActivityBoxTrial from "./ecofriendlyactivities_components/AddActivityBoxTrial.vue";
+import AddActivityBox from "./AddActivityBox.vue";
 
 export default {
   components: {
@@ -21,11 +21,7 @@ export default {
 
 <template>
   <div>
-    <Button
-      label="Select a Product"
-      icon="pi pi-search"
-      @click="showAddActivityBox"
-    />
+    <Button label="Add Eco-Friendly Activity" @click="showAddActivityBox" />
     <DynamicDialog />
   </div>
 </template>

@@ -4,18 +4,21 @@
       :activityData="activityData"
       @deletedActivity="deletedActivity"
     />
-    <AddActivityBox @added="added" />
+    <!-- <AddActivityBox @added="added" /> -->
+    <AddActivity @added="added" />
   </div>
 </template>
 
 <script>
 import AddActivityBox from "./ecofriendlyactivities_components/AddActivityBox.vue";
+import AddActivity from "./ecofriendlyactivities_components/AddActivity.vue";
 import ActivityTable from "./ecofriendlyactivities_components/ActivityTable.vue";
 
 export default {
   components: {
     AddActivityBox,
     ActivityTable,
+    AddActivity,
   },
   props: {
     activityData: Object,
