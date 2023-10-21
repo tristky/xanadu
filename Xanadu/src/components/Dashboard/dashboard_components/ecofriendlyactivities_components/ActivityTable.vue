@@ -1,117 +1,68 @@
 <template>
-  <div>
-    <h2 style="color: black">Eco-Friendly Activities</h2>
-    <table id="ecoFriendlyActivitiesTable" class="auto-index">
-      <tr>
-        <th>Activity Description</th>
-        <th>Activity Type</th>
-        <th>Amount</th>
-        <th>Sustainability Points</th>
-        <th>Date</th>
-        <th>Options</th>
-      </tr>
-      <tr v-for="activity in activityData" :key="activity.id">
-        <td>{{ activity.activityDescription }}</td>
-        <td>{{ activity.activityType }}</td>
-        <td>{{ activity.amount }}{{ getUnits(activity.activityType) }}</td>
-        <td>{{ activity.sustainabilityPoints }}</td>
-        <td>{{ activity.date }}</td>
-        <td>
-          <button @click="toggleUpdateForm(activity)">Edit</button>
-          <button @click="deleteActivity(activity.activityType, activity.id)">
-            X
-          </button>
-        </td>
-      </tr>
-    </table>
-    <br /><br />
-    <!-- <DatePicker></DatePicker> -->
-    <!-- <button id="buttonToAddActivity">Add Activity</button> -->
-    <div v-if="showUpdateForm" class="popup">
-      <div class="popup-content">
-        <button @click="toggleUpdateForm(null)">Close Form</button>
-        <form id="updateActivityForm">
-          <div>
-            <label for="activityDescription">Activity Description:</label>
-            <br />
-            <textarea
-              v-model="updateForm.description"
-              id="updateActivityDescription"
-              placeholder="Update Activity Description"
-            ></textarea>
-            <br />
-          </div>
-          <div>
-            <select v-model="updateForm.type" id="updateActivityType">
-              <!-- <option value="" disabled selected>Activity Type</option> -->
-              <option
-                v-if="!activityType"
-                value=""
-                disabled
-                selected
-                style="display: none"
-              >
-                Activity Type
-              </option>
-              <option v-for="activity in activityTypes" :key="activity">
-                {{ activity }}
-              </option>
-            </select>
-          </div>
-          <br />
-          <div>
-            <input
-              type="text"
-              v-model.number.lazy="updateForm.amount"
-              placeholder="Amount"
-              style="display: inline-flex"
-              id="updateActivityAmount"
-            />
-            <h4
-              v-show="activityTypeWasteReduction"
-              style="display: inline-flex; color: black"
-            >
-              &nbsp;Kg
-            </h4>
-            <h4
-              v-show="activityTypeWaterConservation"
-              style="display: inline-flex; color: black"
-            >
-              &nbsp;Litres
-            </h4>
-            <h4
-              v-show="activityTypeEnergyConservation"
-              style="display: inline-flex; color: black"
-            >
-              &nbsp;KwH
-            </h4>
-            <!-- Add other fields as needed -->
-          </div>
-          <br />
-          <button
-            id="updateActivityButton"
-            type="submit"
-            @submit.prevent="
-              updateActivity(
-                updateForm.description,
-                updateForm.type,
-                updateForm.points,
-                updateForm.date
-              )
-            "
+  <div class="card p-fluid">
+    <DataTable
+      v-model:editingRows="editingRows"
+      :value="activityData"
+      editMode="row"
+      dataKey="id"
+      @row-edit-save="onRowEditSave"
+      tableClass="editable-cells-table"
+      tableStyle="min-width: 50rem"
+    >
+      <Column
+        field="activityDescription"
+        header="Description"
+        style="width: 20%"
+      >
+        <template #editor="{ data, field }">
+          <InputText v-model="data[field]" />
+        </template>
+      </Column>
+      <Column field="activityType" header="Type" style="width: 20%">
+        <template #editor="{ data, field }">
+          <Dropdown
+            v-model="data[field]"
+            :options="statuses"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Select a Status"
           >
-            Update
-          </button>
-        </form>
-      </div>
-    </div>
+            <!-- <template #option="slotProps">
+              <Tag :value="slotProps.option.value" />
+            </template> -->
+          </Dropdown>
+        </template>
+        <!-- <template #body="slotProps">
+          <Tag :value="slotProps.data.activityType" />
+        </template> -->
+      </Column>
+      <Column field="amount" header="Amount" style="width: 20%">
+        <template #editor="{ data, field }">
+          <InputText v-model="data[field]" />
+          <h3>{{ getUnits(activityType) }}</h3>
+        </template>
+      </Column>
+      <Column field="sustainabilityPoints" header="Points" style="width: 20%">
+      </Column>
+      <Column field="date" header="Date" style="width: 20%">
+        <template #editor="{ data, field }">
+          <Calendar v-model="data[field]" showIcon />
+          <!-- <InputText v-model="data[field]" /> -->
+        </template>
+      </Column>
+      <Column
+        :rowEditor="true"
+        style="width: 10%; min-width: 8rem"
+        bodyStyle="text-align:center"
+      ></Column>
+      <Column> </Column>
+    </DataTable>
   </div>
 </template>
 
 <script>
 import firebaseApp from "@/firebase.js";
 import { getFirestore } from "firebase/firestore";
-// import DatePicker from "./DatePicker.vue";
 import {
   doc,
   getDocs,
@@ -121,32 +72,25 @@ import {
   deleteDoc,
   updateDoc,
 } from "firebase/firestore";
-// import DatePicker from "./DatePicker.vue";
-
 const db = getFirestore(firebaseApp);
 
 export default {
-  // components: {
-  //   DatePicker,
-  // },
   emits: ["deletedActivity"],
   props: {
-    activityData: Array,
+    activityData: Array, // this is in the right format for the DataTable
   },
   data() {
     return {
-      showUpdateForm: false,
-      updateForm: {
-        description: "",
-        type: "",
-        amount: "",
-        // points: "",
-        date: "Not Done Yet",
-      },
-      activityTypes: [
-        "Water Conservation",
-        "Energy Conservation",
-        "Waste Reduction",
+      activityDescription: null,
+      activityType: null,
+      amount: null,
+      sustainabilityPoints: null,
+      date: null,
+      editingRows: [],
+      statuses: [
+        { label: "Water Conservation", value: "Water Conservation" },
+        { label: "Energy Conservation", value: "Energy Conservation" },
+        { label: "Waste Reduction", value: "Waste Reduction" },
       ],
       activityTypeEnergyConservation: false,
       activityTypeWaterConservation: false,
@@ -154,15 +98,27 @@ export default {
     };
   },
   methods: {
-    toggleUpdateForm(activity) {
-      if (activity) {
-        this.description = activity.activityDescription;
-        this.type = activity.activityType;
-        this.amount = activity.amount;
-        this.date = activity.date;
-      }
-      console.log(this.description);
-      this.showUpdateForm = !this.showUpdateForm;
+    async onRowEditSave(event) {
+      let { newData, index } = event;
+      // var points = (newData.amount) / 10;
+      // const doc = doc(
+      //   db,
+      //   "Users/Green Rangers/TestingAcct/Eco-Friendly Activities/" +
+      //     newData.activityType +
+      //     "/" +
+      //     activityId
+      // );
+      // await updateDoc(doc, {
+      //   activityDescription: description,
+      //   activityType: type,
+      //   amount: amount,
+      //   sustainabilityPoints: points,
+      //   date: date,
+      // });
+      // this.products[index] = newData;
+      this.$emit("activityEdited");
+      console.log(this.activityType);
+      console.log(newData);
     },
     getUnits(activityType) {
       let units = "";
@@ -228,44 +184,12 @@ export default {
       }
     },
   },
-  // data() {
-  //   return {
-  //     activities: {},
-  //   };
-  // },
-  // watch: {
-  //   activityData(data) {
-  //     console.log(
-  //       "activityData has been passed from EcoFriendlyActivities.vue to ActivityTable.vue. This is activityData:"
-  //     );
-  //     console.log(data);
-  //   },
-  // },
 };
 </script>
 
-<style scoped>
-.container {
-  color: darkgrey;
-}
-button {
-  background-color: #738678;
-  color: white;
-  font-weight: bold;
-  /* width: 100%; */
-}
-
-.popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  padding: 20px;
-  border: 1px solid #ccc;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-.popup-content {
-  text-align: center;
+<style lang="scss" scoped>
+::v-deep(.editable-cells-table td.p-cell-editing) {
+  padding-top: 0.6rem;
+  padding-bottom: 0.6rem;
 }
 </style>

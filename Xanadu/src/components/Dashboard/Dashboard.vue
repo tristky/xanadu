@@ -141,9 +141,10 @@ export default {
     let activityData = await this.getActivityData();
     this.activityData = activityData;
     // For debugging
-    // this.activityData.forEach((doc) => {
-    //   console.log(doc);
-    // });
+    this.activityData.forEach((doc) => {
+      console.log(doc);
+    });
+    // console.log(this.activityData);
   },
 };
 </script>

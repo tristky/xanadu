@@ -8,7 +8,14 @@ export default {
   },
   methods: {
     showAddActivityBox() {
-      this.$dialog.open(AddActivityBox, {});
+      this.$dialog.open(AddActivityBox, {
+        emits: {
+          onAdded: () => {
+            // The 'on' prefix and same emit name are required.
+            this.$emit("added"); // {user: 'primetime'}
+          },
+        },
+      });
     },
   },
   data() {

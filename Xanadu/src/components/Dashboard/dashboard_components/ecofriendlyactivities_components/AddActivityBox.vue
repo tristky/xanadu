@@ -68,6 +68,7 @@ import { doc, setDoc, addDoc, collection } from "firebase/firestore";
 const db = getFirestore(firebaseApp);
 
 export default {
+  emits: ["info"],
   data() {
     return {
       showForm: false,
@@ -111,7 +112,13 @@ export default {
       let activityType = this.activityType;
       let activityDescription = this.activityDescription;
       let amount = this.amount;
-      let date = this.date;
+      var date = this.date;
+      const dateObject = new Date(date);
+      const year = dateObject.getFullYear();
+      const month = String(dateObject.getMonth() + 1).padStart(2, "0");
+      const day = String(dateObject.getDate()).padStart(2, "0");
+      date = `${day}/${month}/${year}`;
+
       // add in the convertion to sustainability points here.
 
       console.log(activityType);
