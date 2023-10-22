@@ -2,7 +2,7 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router/index.js";
 import PrimeVue from "primevue/config";
-import "primevue/resources/themes/lara-dark-indigo/theme.css";
+import "primevue/resources/themes/vela-green/theme.css";
 import "primevue/resources/primevue.min.css";
 import "primeicons/primeicons.css";
 import InputText from "primevue/inputtext";
@@ -20,6 +20,10 @@ import InputNumber from "primevue/inputnumber";
 import TextArea from "primevue/textarea";
 import DynamicDialog from "primevue/dynamicdialog";
 import DialogService from "primevue/dialogservice";
+import Toolbar from "primevue/toolbar";
+import RadioButton from "primevue/radiobutton";
+import Dialog from "primevue/dialog";
+import Textarea from "primevue/textarea";
 
 const app = createApp(App);
 
@@ -27,6 +31,10 @@ app.use(PrimeVue);
 app.use(ToastService);
 app.use(DialogService);
 
+app.component("RadioButton", RadioButton);
+app.component("Dialog", Dialog);
+app.component("Textarea", Textarea);
+app.component("Toolbar", Toolbar);
 app.component("DynamicDialog", DynamicDialog);
 app.component("TextArea", TextArea);
 app.component("InputNumber", InputNumber);

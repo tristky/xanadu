@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "firebase": "^10.5.0",
     "primeicons": "^6.0.1",
     "primevue": "^3.37.0",
     "vue": "^3.3.4",

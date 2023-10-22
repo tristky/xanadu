@@ -83,7 +83,19 @@
           sortable
           style="min-width: 10rem"
         ></Column>
-
+        <!-- <Column
+          field="inventoryStatus"
+          header="Status"
+          sortable
+          style="min-width: 12rem"
+        >
+          <template #body="slotProps">
+            <Tag
+              :value="slotProps.data.inventoryStatus"
+              :severity="getStatusLabel(slotProps.data.inventoryStatus)"
+            />
+          </template>
+        </Column> -->
         <Column :exportable="false" style="min-width: 8rem">
           <template #body="slotProps">
             <Button
@@ -137,6 +149,36 @@
           cols="20"
         />
       </div>
+
+      <!-- <div class="field">
+        <label for="inventoryStatus" class="mb-3">Inventory Status</label>
+        <Dropdown
+          id="inventoryStatus"
+          v-model="product.inventoryStatus"
+          :options="statuses"
+          optionLabel="label"
+          placeholder="Select a Status"
+        >
+          <template #value="slotProps">
+            <div v-if="slotProps.value && slotProps.value.value">
+              <Tag
+                :value="slotProps.value.value"
+                :severity="getStatusLabel(slotProps.value.label)"
+              />
+            </div>
+            <div v-else-if="slotProps.value && !slotProps.value.value">
+              <Tag
+                :value="slotProps.value"
+                :severity="getStatusLabel(slotProps.value)"
+              />
+            </div>
+            <span v-else>
+              {{ slotProps.placeholder }}
+            </span>
+          </template>
+        </Dropdown>
+      </div> -->
+
       <div class="field">
         <label class="mb-3">Activity Type</label>
         <div class="formgrid grid">
@@ -180,6 +222,10 @@
             :maxFractionDigits="2"
           />
         </div>
+        <!-- <div class="field col">
+          <label for="quantity">Quantity</label>
+          <InputNumber id="quantity" v-model="product.quantity" integeronly />
+        </div> -->
         <div class="field col">
           <label for="Date Picker">Date</label>
           <Calendar
@@ -367,6 +413,11 @@ export default {
       selectedActivities: null,
       filters: {},
       submitted: false,
+      //   statuses: [
+      //     { label: "INSTOCK", value: "instock" },
+      //     { label: "LOWSTOCK", value: "lowstock" },
+      //     { label: "OUTOFSTOCK", value: "outofstock" },
+      //   ],
     };
   },
   props: {
@@ -521,6 +572,9 @@ export default {
       this.deleteProductsDialog = true;
     },
     deleteSelectedActivities() {
+      //   this.products = this.products.filter(
+      //     (val) => !this.selectedProducts.includes(val)
+      //   );
       this.deleteActivitiesDialog = false;
       this.selectedActivities = null;
       this.$toast.add({
@@ -535,6 +589,44 @@ export default {
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
       };
     },
+    // getStatusLabel(status) {
+    //   switch (status) {
+    //     case "INSTOCK":
+    //       return "success";
+
+    //     case "LOWSTOCK":
+    //       return "warning";
+
+    //     case "OUTOFSTOCK":
+    //       return "danger";
+
+    //     default:
+    //       return null;
+    //   }
+    // },
+    // findIndexById(id) {
+    //   let index = -1;
+    //   for (let i = 0; i < this.products.length; i++) {
+    //     if (this.products[i].id === id) {
+    //       index = i;
+    //       break;
+    //     }
+    //   }
+
+    //   return index;
+    // },
+    // createId() {
+    //   let id = "";
+    //   var chars =
+    //     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    //   for (var i = 0; i < 5; i++) {
+    //     id += chars.charAt(Math.floor(Math.random() * chars.length));
+    //   }
+    //   return id;
+    // },
+    // exportCSV() {
+    //   this.$refs.dt.exportCSV();
+    // },
   },
 };
 </script>

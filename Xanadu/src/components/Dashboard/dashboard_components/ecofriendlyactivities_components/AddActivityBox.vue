@@ -47,7 +47,7 @@
         </h4>
       </span>
       <div id="dateSelector">
-        <Calendar v-model="date" showIcon />
+        <Calendar v-model="date" showIcon dateFormat="dd/mm/yy" />
       </div>
       <Button
         label="AddActivity"
@@ -132,8 +132,8 @@ export default {
         const docRef = await addDoc(
           collection(
             db,
-            "Users/Green Rangers/TestingAcct/Eco-Friendly Activities/" +
-              activityType
+            "Green Rangers/TestingAcct/Eco-Friendly Activities"
+            //  + activityType
           ),
           {
             activityType: activityType,

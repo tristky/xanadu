@@ -25,6 +25,10 @@ import InputNumber from "primevue/inputnumber";
 import TextArea from "primevue/textarea";
 import DynamicDialog from "primevue/dynamicdialog";
 import DialogService from "primevue/dialogservice";
+import Toolbar from "primevue/toolbar";
+import RadioButton from "primevue/radiobutton";
+import Dialog from "primevue/dialog";
+import Textarea from "primevue/textarea";
 
 // createApp(App).use(router).use(VueChartkick).mount("#app");
 
@@ -34,6 +38,10 @@ app.use(PrimeVue);
 app.use(ToastService);
 app.use(DialogService);
 
+app.component("RadioButton", RadioButton);
+app.component("Dialog", Dialog);
+app.component("Textarea", Textarea);
+app.component("Toolbar", Toolbar);
 app.component("DynamicDialog", DynamicDialog);
 app.component("TextArea", TextArea);
 app.component("InputNumber", InputNumber);
