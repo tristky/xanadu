@@ -83,6 +83,8 @@
           sortable
           style="min-width: 10rem"
         ></Column>
+        <Column field="date" header="Date" style="min-width: 10rem" sortable>
+        </Column>
 
         <Column :exportable="false" style="min-width: 8rem">
           <template #body="slotProps">
@@ -280,7 +282,12 @@
         </div>
       </div>
       <template #footer>
-        <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
+        <Button
+          label="Cancel"
+          icon="pi pi-times"
+          text
+          @click="hideEditDialog"
+        />
         <Button label="Save" icon="pi pi-check" text @click="updateActivity" />
       </template>
     </Dialog>
@@ -402,7 +409,17 @@ export default {
       this.activityDialog = false;
       this.submitted = false;
     },
+    hideEditDialog() {
+      this.editActivityDialog = false;
+      this.submitted = false;
+    },
     async addActivity() {
+      this.$toast.add({
+        severity: "info",
+        summary: "Adding Activity...",
+        // detail: "Activity Deleted",
+        life: 3000,
+      });
       console.log(this.activity);
       var date = this.activity.date;
       const dateObject = new Date(date);
@@ -411,8 +428,6 @@ export default {
       const day = String(dateObject.getDate()).padStart(2, "0");
       date = `${day}/${month}/${year}`;
       let sustainabilityPoints = (this.activity.amount / 10).toFixed(3);
-
-      alert("Saving your Eco-Friendly Activity Data!");
       try {
         const docRef = await addDoc(
           collection(db, "Green Rangers/TestingAcct/Eco-Friendly Activities"),
@@ -433,6 +448,12 @@ export default {
         console.error("Error adding document: ", error);
       }
       this.$emit("added");
+      this.$toast.add({
+        severity: "success",
+        summary: "Activity Added!",
+        // detail: "Activity Deleted",
+        life: 3000,
+      });
       console.log("Input box resetted, 'added' was emitted");
 
       this.submitted = true; // dont touch
@@ -518,17 +539,33 @@ export default {
     },
 
     confirmDeleteSelected() {
-      this.deleteProductsDialog = true;
+      this.deleteActivitiesDialog = true;
     },
-    deleteSelectedActivities() {
+    async deleteSelectedActivities() {
+      this.$toast.add({
+        severity: "error",
+        summary: "Deleting Activities...",
+        // detail: "Activity Deleted",
+        life: 3000,
+      });
+      this.selectedActivities.forEach(async (activity) => {
+        await deleteDoc(
+          doc(
+            db,
+            "Green Rangers/TestingAcct/Eco-Friendly Activities/" + activity.id
+          )
+        );
+      });
+
       this.deleteActivitiesDialog = false;
       this.selectedActivities = null;
       this.$toast.add({
         severity: "success",
-        summary: "Successful",
-        detail: "Products Deleted",
+        summary: "Activities Deleted!",
+        // detail: "Activity Deleted",
         life: 3000,
       });
+      this.$emit("deletedActivity");
     },
     initFilters() {
       this.filters = {

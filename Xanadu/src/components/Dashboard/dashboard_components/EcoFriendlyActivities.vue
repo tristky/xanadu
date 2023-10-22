@@ -2,7 +2,7 @@
   <div>
     <ActivityTable
       :activityData="activityData"
-      @added="refresh"
+      @added="added"
       @deletedActivity="deletedActivity"
       @activityEdited="activityEdited"
     />
