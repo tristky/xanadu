@@ -1,40 +1,47 @@
 <template>
-    <div class="shipping">
-        <p>Free shipping for all orders!</p>
-    </div>
-    <div class="navbar">
-        <img class = "logo" src = "../assets/xanadu.png">
-
-        <ul>
-            <li> 
-                <RouterLink to ="/">Dashboard</RouterLink>
-            </li>
-            <li> 
-                <RouterLink to ="marketplace">Marketplace</RouterLink>
-            </li>
-            <li> 
-                <RouterLink to ="forum">Forum</RouterLink>
-            </li>
-        </ul>
-    </div>
+  <div class="shipping">
+    <p>Free shipping for all orders!</p>
+  </div>
+  <div class="navbar">
+    <img class="logo" src="../assets/xanadu.png">
+    <ul>
+      <li>
+        <RouterLink to="/">Dashboard</RouterLink>
+      </li>
+      <li>
+        <RouterLink to="marketplace">Marketplace</RouterLink>
+      </li>
+      <li>
+        <RouterLink to="forum">Forum</RouterLink>
+      </li>
+      <li>
+        <RouterLink to="cart">Cart</RouterLink>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script>
 import { RouterLink } from 'vue-router';
 
-</script>
-<style>
-
-.navbar a.router-link-exact-active {
-    color: #5A6D57
+export default {
+  components: {
+    RouterLink
+  }
 }
+</script>
+
+<style>
+.navbar a.router-link-exact-active {
+  color: #5A6D57;
+}
+
 ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
   overflow: hidden;
 }
-
 
 .navbar {
   display: inline-flex;
@@ -56,7 +63,6 @@ li {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
 }
 
 .logo {
