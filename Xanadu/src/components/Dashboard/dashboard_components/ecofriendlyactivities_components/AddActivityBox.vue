@@ -1,68 +1,62 @@
 <template>
-  <div class="container">
+  <div>
     <form id="addEcoFriendlyActivity">
-      <h2 style="color: black">Add Activity</h2>
-      <div class="formli" id="addActivity">
-        <!-- <label for="activityType">Activity Type:</label> -->
-        <div id="addingActivityType">
-          <select v-model="activityType" id="activityType">
-            <!-- <option value="" disabled selected>Activity Type</option> -->
-            <option
-              v-if="!activityType"
-              value=""
-              disabled
-              selected
-              style="display: none"
-            >
-              Activity Type
-            </option>
-            <option v-for="activity in activityTypes" :key="activity">
-              {{ activity }}
-            </option>
-          </select>
-        </div>
-        <br />
-        <div id="addingActivityDescription">
-          <label for="activityDescription">Activity Description:</label>
-          <br />
-          <textarea
-            v-model.lazy="activityDescription"
-            id="activityDescription"
-            placeholder="Activity Description"
-          ></textarea>
-        </div>
-        <div id="addingActivityAmount">
-          <input
-            type="text"
-            v-model.number.lazy="amount"
-            placeholder="Amount"
-            style="display: inline-flex"
-            id="acitivityAmount"
-          />
-          <h4
-            v-show="activityTypeWasteReduction"
-            style="display: inline-flex; color: black"
-          >
-            &nbsp;Kg
-          </h4>
-          <h4
-            v-show="activityTypeWaterConservation"
-            style="display: inline-flex; color: black"
-          >
-            &nbsp;Litres
-          </h4>
-          <h4
-            v-show="activityTypeEnergyConservation"
-            style="display: inline-flex; color: black"
-          >
-            &nbsp;KwH
-          </h4>
-        </div>
-        <br />
-        <button id="addActivityButton" type="submit" @click.prevent="savetofs">
-          Add
-        </button>
+      <div>
+        <h1>Add Activity</h1>
       </div>
+      <div class="card flex justify-content-center">
+        <Dropdown
+          id="activityType"
+          v-model="activityType"
+          :options="activityTypes"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Activity Type"
+          class="w-full md:w-14rem"
+        />
+      </div>
+      <span class="p-float-label">
+        <TextArea id="activityDescription" v-model="activityDescription" />
+        <label for="activityDescription">Activity Description</label>
+      </span>
+      <span class="p-float-label">
+        <InputNumber
+          v-model="amount"
+          inputId="amount"
+          :minFractionDigits="0"
+          :maxFractionDigits="2"
+        />
+        <label for="amount">Amount</label>
+        <h4
+          v-show="activityTypeWasteReduction"
+          style="display: inline-flex; color: black"
+        >
+          &nbsp;Kg
+        </h4>
+        <h4
+          v-show="activityTypeWaterConservation"
+          style="display: inline-flex; color: black"
+        >
+          &nbsp;Litres
+        </h4>
+        <h4
+          v-show="activityTypeEnergyConservation"
+          style="display: inline-flex; color: black"
+        >
+          &nbsp;KwH
+        </h4>
+      </span>
+      <div id="dateSelector">
+        <Calendar v-model="date" showIcon dateFormat="dd/mm/yy" />
+      </div>
+      <Button
+        label="AddActivity"
+        icon="pi pi-user"
+        id="addButtonForForm"
+        @click.prevent="savetofs"
+        type="submit"
+        >Add Activity</Button
+      >
     </form>
   </div>
 </template>
@@ -74,18 +68,19 @@ import { doc, setDoc, addDoc, collection } from "firebase/firestore";
 const db = getFirestore(firebaseApp);
 
 export default {
+  emits: ["info"],
   data() {
     return {
+      showForm: false,
+      activityDescription: null,
+      amount: null,
+      activityType: null,
       activityTypes: [
-        "Water Conservation",
-        "Energy Conservation",
-        "Waste Reduction",
+        { label: "Water Conservation", value: "Water Conservation" },
+        { label: "Energy Conservation", value: "Energy Conservation" },
+        { label: "Waste Reduction", value: "Waste Reduction" },
       ],
-      activityType: "",
-      activityDescription: "",
-      amount: "",
-      // activityDate: "",
-
+      date: null,
       activityTypeEnergyConservation: false,
       activityTypeWaterConservation: false,
       activityTypeWasteReduction: false,
@@ -110,7 +105,6 @@ export default {
   },
   methods: {
     async savetofs() {
-      // bear in mind that you have to check whether the Amount field is really a number. But let's worry about that later on
       // Also keep the description to less than 50 words
       // also make sure need check if any fields are empty, dont add.
       console.log("Adding Eco-friendly Activity to Firestore...");
@@ -118,11 +112,19 @@ export default {
       let activityType = this.activityType;
       let activityDescription = this.activityDescription;
       let amount = this.amount;
+      var date = this.date;
+      const dateObject = new Date(date);
+      const year = dateObject.getFullYear();
+      const month = String(dateObject.getMonth() + 1).padStart(2, "0");
+      const day = String(dateObject.getDate()).padStart(2, "0");
+      date = `${day}/${month}/${year}`;
+
       // add in the convertion to sustainability points here.
 
       console.log(activityType);
       console.log(activityDescription);
       console.log(amount);
+      console.log(date);
       let sustainabilityPoints = (amount / 10).toFixed(3);
 
       alert("Saving your Eco-Friendly Activity Data!");
@@ -130,15 +132,15 @@ export default {
         const docRef = await addDoc(
           collection(
             db,
-            "Users/Green Rangers/TestingAcct/Eco-Friendly Activities/" +
-              activityType
+            "Green Rangers/TestingAcct/Eco-Friendly Activities"
+            //  + activityType
           ),
           {
             activityType: activityType,
             activityDescription: activityDescription,
             amount: amount,
             sustainabilityPoints: sustainabilityPoints,
-            date: "Not yet done",
+            date: date,
           }
         );
         console.log(
@@ -148,9 +150,10 @@ export default {
       } catch (error) {
         console.error("Error adding document: ", error);
       }
-      this.activityType = "";
-      this.activityDescription = "";
-      this.amount = "";
+      this.activityType = null;
+      this.activityDescription = null;
+      this.amount = null;
+      this.date = null;
       document.getElementById("addEcoFriendlyActivity").reset();
       this.$emit("added");
       console.log("Input box resetted, 'added' was emitted");
@@ -158,15 +161,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.container {
-  color: darkgrey;
-}
-button {
-  background-color: #738678;
-  color: white;
-  font-weight: bold;
-  /* width: 100%; */
-}
-</style>

@@ -2,19 +2,24 @@
   <div>
     <ActivityTable
       :activityData="activityData"
+      @added="added"
       @deletedActivity="deletedActivity"
+      @activityEdited="activityEdited"
     />
-    <AddActivityBox @added="added" />
+    <!-- <AddActivityBox @added="added" /> -->
+    <!-- <AddActivity @added="added" /> -->
   </div>
 </template>
 
 <script>
-import AddActivityBox from "./ecofriendlyactivities_components/AddActivityBox.vue";
+// import AddActivityBox from "./ecofriendlyactivities_components/AddActivityBox.vue";
+// import AddActivity from "./ecofriendlyactivities_components/AddActivity.vue";
 import ActivityTable from "./ecofriendlyactivities_components/ActivityTable.vue";
 
 export default {
   components: {
-    AddActivityBox,
+    // AddActivityBox,
+    // AddActivity,
     ActivityTable,
   },
   props: {
@@ -29,6 +34,11 @@ export default {
     },
   },
   methods: {
+    activityEdited() {
+      console.log("emit of activityEdited from ActivityTable received!");
+      this.$emit("activityEdited");
+      console.log("EcoFriendlyActivities have emitted 'activityEdited'!");
+    },
     deletedActivity() {
       console.log("emit of deletedActivity from AddActivityBox received!");
       this.$emit("deletedActivity");
