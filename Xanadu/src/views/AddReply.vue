@@ -8,7 +8,8 @@
 
 
 <script>
-import firebase from '@/Config/firebaseConfig.js';
+import { getFirestore, addDoc, collection, Timestamp } from 'firebase/firestore';
+import firebase from '@/firebase.js';  // Ensure firebase.js exports the initialized app.
 
 export default {
     data() {
@@ -17,26 +18,29 @@ export default {
         };
     },
     methods: {
-        submitReply() {
+        async submitReply() {
             if (this.content.trim()) {
-                const db = firebase.firestore();
-                // Assuming replies are stored in a sub-collection of threads
-                db.collection('threads').doc(this.$route.params.id).collection('replies').add({
-                    content: this.content,
-                    timestamp: new Date() 
-                })
-                .then(() => {
-                    this.$router.go(-1); // Redirects user back to the previous page after adding the reply
-                })
-                .catch(error => {
+                const db = getFirestore(firebase);
+                // Construct the replies collection reference
+                const repliesCollectionRef = collection(db, 'threads', this.$route.params.id, 'replies');
+                
+                try {
+                    await addDoc(repliesCollectionRef, {
+                        content: this.content,
+                        timestamp: Timestamp.fromDate(new Date())  // Using Firebase Timestamp for better compatibility
+                    });
+
+                    this.$router.go(-1);  // Redirects user back to the previous page after adding the reply
+                } catch (error) {
                     console.error("Error adding reply: ", error);
-                });
+                }
             } else {
                 alert("Reply content cannot be empty.");
             }
         }
     }
 }
+
 </script>
 
 <style scoped>

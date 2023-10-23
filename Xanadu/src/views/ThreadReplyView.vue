@@ -42,7 +42,8 @@
 </template>
 
 <script>
-import firebase from '@/Config/firebaseConfig.js';
+import { getFirestore, doc, getDoc, collection, onSnapshot, query, orderBy, deleteDoc } from 'firebase/firestore';
+import firebase from '@/firebase.js';  // Ensure firebase.js exports the initialized app.
 
 export default {
     props: ['threadId'],
@@ -52,45 +53,51 @@ export default {
             replies: []
         };
     },
-    created() {
-    const db = firebase.firestore();
+    async created() {
+        const db = getFirestore(firebase);
 
-    // Log the threadId to ensure it's correct
-    console.log("Thread ID:", this.threadId);
+        // Log the threadId to ensure it's correct
+        console.log("Thread ID:", this.threadId);
 
-    // Fetch the thread data
-    db.collection('threads').doc(this.threadId).get().then(doc => {
-        if (doc.exists) {
-            this.thread = { id: doc.id, ...doc.data() };
+        // Fetch the thread data
+        const threadRef = doc(db, 'threads', this.threadId);
+        const threadDoc = await getDoc(threadRef);
+        
+        if (threadDoc.exists()) {
+            this.thread = { id: threadDoc.id, ...threadDoc.data() };
         }
-    });
 
-    // Fetch the replies for the thread
-    db.collection('threads').doc(this.threadId).collection('replies').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
-        this.replies = snapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
-        }));
+        // Fetch the replies for the thread
+        const repliesQuery = query(collection(db, 'threads', this.threadId, 'replies'), orderBy('timestamp', 'desc'));
+        
+        onSnapshot(repliesQuery, (snapshot) => {
+            this.replies = snapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
 
-        // Log the fetched replies to see them
-        console.log("Fetched replies:", this.replies);
-    });
-},
+            // Log the fetched replies to see them
+            console.log("Fetched replies:", this.replies);
+        });
+    },
 
     methods: {
-    deleteReply(replyId) {
-        const db = firebase.firestore();
-        db.collection('threads').doc(this.threadId).collection('replies').doc(replyId).delete()
-            .then(() => {
+        async deleteReply(replyId) {
+            const db = getFirestore(firebase);
+
+            try {
+                const replyRef = doc(db, 'threads', this.threadId, 'replies', replyId);
+                await deleteDoc(replyRef);
                 console.log("Reply successfully deleted!");
                 // Optionally, you can remove the deleted reply from the `replies` array
                 this.replies = this.replies.filter(reply => reply.id !== replyId);
-            }).catch((error) => {
+            } catch (error) {
                 console.error("Error deleting reply: ", error);
-            });
+            }
+        }
     }
 }
-}
+
 </script>
 
 <style scoped>

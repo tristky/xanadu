@@ -4,6 +4,9 @@ import Forum from "../views/ForumView.vue";
 import Marketplace from "../views/MarketplaceView.vue";
 import AddProduct from '../views/AddProduct.vue'
 import ProductView from '../views/ProductView.vue'
+import AddThread from '../views/AddThread.vue';
+import AddReply from '../views/AddReply.vue';
+import ThreadReply from '../views/ThreadReplyView.vue';
 import Cart from '../views/CartView.vue' // Import the Cart component here
 
 const router = createRouter({
@@ -45,7 +48,7 @@ const router = createRouter({
     {
         path: '/thread/:threadId',
         name: 'ThreadReply',
-        component: () => import('@/components/ThreadReply.vue'),
+        component: () => import('../views/ThreadReplyView.vue'),
         props: true // to pass the threadId as a prop to the component
       },
       {

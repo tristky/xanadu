@@ -14,28 +14,33 @@
 </template>
 
 <script>
-import firebase from '@/Config/firebaseConfig.js';
+import { getFirestore, addDoc, collection } from "firebase/firestore";
 
 export default {
     data() {
         return {
-            threadTitle: '',      // Added thread title data property
-            threadContent: ''
+            threadTitle: '',
+            threadContent: '',
+            db: null  // Added this property to cache the Firestore instance
         };
     },
+    created() {
+        this.db = getFirestore();  // Initialize Firestore instance on component creation
+    },
     methods: {
-        addThread() {
-            const db = firebase.firestore();
-            db.collection('threads').add({
-                title: this.threadTitle,  // Save thread title to database
-                content: this.threadContent,
-                timestamp: new Date() 
-            }).then(() => {
-                this.$router.push('/ForumView');
-            });
+        async addThread() {
+            try {
+                const thread = {
+                    title: this.threadTitle,
+                    content: this.threadContent,
+                    timestamp: new Date()
+                };
+                await addDoc(collection(this.db, 'threads'), thread);
+                this.$router.push('/forum');
+            } catch (error) {
+                console.error("Error adding thread: ", error);
+            }
         }
-
-        
     }
 }
 </script>
