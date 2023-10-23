@@ -38,7 +38,21 @@ const router = createRouter({
       path: '/cart', // Add the cart route here
       name: 'Cart',
       component: Cart
-    }
+    },
+    { path: '/AddThread', 
+      name: 'AddThread',
+      component: AddThread },
+    {
+        path: '/thread/:threadId',
+        name: 'ThreadReply',
+        component: () => import('@/components/ThreadReply.vue'),
+        props: true // to pass the threadId as a prop to the component
+      },
+      {
+        path: '/thread/:id/addreply',
+        name: 'AddReply',
+        component: AddReply
+    },
   ],
 });
 
