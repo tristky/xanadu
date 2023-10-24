@@ -2,12 +2,12 @@
     <div class="products">
       <img class="productimage" src="@/assets/products page.png">
       <div class="add-product-btn">
-        <RouterLink to="AddProduct">Add Product</RouterLink>
+        <RouterLink :to="'/marketplace/AddProduct'">Add Product</RouterLink>
       </div>
   
       <div class="productlist">
         <div v-for="product in products" :key="product.title" class="productcard">
-          <RouterLink :to="'/product/' + product.id">
+          <RouterLink :to="'/marketplace/product/' + product.id">
             <div class="product-card">
               <div class="product-image-container">
                 <img :src="product.picture" alt="Product Image" class="product-card-image">

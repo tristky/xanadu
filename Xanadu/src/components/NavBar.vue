@@ -9,13 +9,13 @@
         <RouterLink to="/">Dashboard</RouterLink>
       </li>
       <li>
-        <RouterLink to="marketplace">Marketplace</RouterLink>
+        <RouterLink :to="'/marketplace'">Marketplace</RouterLink>
       </li>
       <li>
-        <RouterLink to="forum">Forum</RouterLink>
+        <RouterLink :to="'/forum'">Forum</RouterLink>
       </li>
       <li>
-        <RouterLink to="cart">Cart</RouterLink>
+        <RouterLink :to="'/cart'">Cart</RouterLink>
       </li>
     </ul>
   </div>

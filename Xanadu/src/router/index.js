@@ -5,6 +5,7 @@ import Marketplace from "../views/MarketplaceView.vue";
 import AddProduct from '../views/AddProduct.vue'
 import ProductView from '../views/ProductView.vue'
 import Cart from '../views/CartView.vue' // Import the Cart component here
+import EditProduct from '../views/EditProduct.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,14 +26,19 @@ const router = createRouter({
       component: Marketplace,
     },
     {
-      path: '/AddProduct',
+      path: '/marketplace/AddProduct',
       name: 'AddProduct',
       component: AddProduct
     },
     {
-      path: '/product/:id',
+      path: '/marketplace/product/:id',
       name: 'ProductView',
       component: ProductView
+    },
+    {
+      path:'/marketplace/product/:id/edit',
+      name: 'EditProduct',
+      component: EditProduct
     },
     {
       path: '/cart', // Add the cart route here
