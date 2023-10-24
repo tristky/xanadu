@@ -1,3 +1,13 @@
 <template>
-  <h1>This is the Forum</h1>
+  <Forum />
 </template>
+
+<script>
+import Forum from "../components/Forum/Forum.vue";
+
+export default {
+  components: {
+    Forum,
+  },
+};
+</script>
