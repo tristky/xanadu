@@ -83,9 +83,19 @@
           sortable
           style="min-width: 10rem"
         ></Column>
-        <Column field="date" header="Date" style="min-width: 10rem" sortable>
-        </Column>
-
+        <!-- <Column
+          field="inventoryStatus"
+          header="Status"
+          sortable
+          style="min-width: 12rem"
+        >
+          <template #body="slotProps">
+            <Tag
+              :value="slotProps.data.inventoryStatus"
+              :severity="getStatusLabel(slotProps.data.inventoryStatus)"
+            />
+          </template>
+        </Column> -->
         <Column :exportable="false" style="min-width: 8rem">
           <template #body="slotProps">
             <Button
@@ -139,6 +149,36 @@
           cols="20"
         />
       </div>
+
+      <!-- <div class="field">
+        <label for="inventoryStatus" class="mb-3">Inventory Status</label>
+        <Dropdown
+          id="inventoryStatus"
+          v-model="product.inventoryStatus"
+          :options="statuses"
+          optionLabel="label"
+          placeholder="Select a Status"
+        >
+          <template #value="slotProps">
+            <div v-if="slotProps.value && slotProps.value.value">
+              <Tag
+                :value="slotProps.value.value"
+                :severity="getStatusLabel(slotProps.value.label)"
+              />
+            </div>
+            <div v-else-if="slotProps.value && !slotProps.value.value">
+              <Tag
+                :value="slotProps.value"
+                :severity="getStatusLabel(slotProps.value)"
+              />
+            </div>
+            <span v-else>
+              {{ slotProps.placeholder }}
+            </span>
+          </template>
+        </Dropdown>
+      </div> -->
+
       <div class="field">
         <label class="mb-3">Activity Type</label>
         <div class="formgrid grid">
@@ -182,6 +222,10 @@
             :maxFractionDigits="2"
           />
         </div>
+        <!-- <div class="field col">
+          <label for="quantity">Quantity</label>
+          <InputNumber id="quantity" v-model="product.quantity" integeronly />
+        </div> -->
         <div class="field col">
           <label for="Date Picker">Date</label>
           <Calendar
@@ -282,12 +326,7 @@
         </div>
       </div>
       <template #footer>
-        <Button
-          label="Cancel"
-          icon="pi pi-times"
-          text
-          @click="hideEditDialog"
-        />
+        <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
         <Button label="Save" icon="pi pi-check" text @click="updateActivity" />
       </template>
     </Dialog>
@@ -374,6 +413,11 @@ export default {
       selectedActivities: null,
       filters: {},
       submitted: false,
+      //   statuses: [
+      //     { label: "INSTOCK", value: "instock" },
+      //     { label: "LOWSTOCK", value: "lowstock" },
+      //     { label: "OUTOFSTOCK", value: "outofstock" },
+      //   ],
     };
   },
   props: {
@@ -409,17 +453,7 @@ export default {
       this.activityDialog = false;
       this.submitted = false;
     },
-    hideEditDialog() {
-      this.editActivityDialog = false;
-      this.submitted = false;
-    },
     async addActivity() {
-      this.$toast.add({
-        severity: "info",
-        summary: "Adding Activity...",
-        // detail: "Activity Deleted",
-        life: 3000,
-      });
       console.log(this.activity);
       var date = this.activity.date;
       const dateObject = new Date(date);
@@ -428,6 +462,8 @@ export default {
       const day = String(dateObject.getDate()).padStart(2, "0");
       date = `${day}/${month}/${year}`;
       let sustainabilityPoints = (this.activity.amount / 10).toFixed(3);
+
+      alert("Saving your Eco-Friendly Activity Data!");
       try {
         const docRef = await addDoc(
           collection(db, "Green Rangers/TestingAcct/Eco-Friendly Activities"),
@@ -448,12 +484,6 @@ export default {
         console.error("Error adding document: ", error);
       }
       this.$emit("added");
-      this.$toast.add({
-        severity: "success",
-        summary: "Activity Added!",
-        // detail: "Activity Deleted",
-        life: 3000,
-      });
       console.log("Input box resetted, 'added' was emitted");
 
       this.submitted = true; // dont touch
@@ -539,39 +569,64 @@ export default {
     },
 
     confirmDeleteSelected() {
-      this.deleteActivitiesDialog = true;
+      this.deleteProductsDialog = true;
     },
-    async deleteSelectedActivities() {
-      this.$toast.add({
-        severity: "error",
-        summary: "Deleting Activities...",
-        // detail: "Activity Deleted",
-        life: 3000,
-      });
-      this.selectedActivities.forEach(async (activity) => {
-        await deleteDoc(
-          doc(
-            db,
-            "Green Rangers/TestingAcct/Eco-Friendly Activities/" + activity.id
-          )
-        );
-      });
-
+    deleteSelectedActivities() {
+      //   this.products = this.products.filter(
+      //     (val) => !this.selectedProducts.includes(val)
+      //   );
       this.deleteActivitiesDialog = false;
       this.selectedActivities = null;
       this.$toast.add({
         severity: "success",
-        summary: "Activities Deleted!",
-        // detail: "Activity Deleted",
+        summary: "Successful",
+        detail: "Products Deleted",
         life: 3000,
       });
-      this.$emit("deletedActivity");
     },
     initFilters() {
       this.filters = {
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
       };
     },
+    // getStatusLabel(status) {
+    //   switch (status) {
+    //     case "INSTOCK":
+    //       return "success";
+
+    //     case "LOWSTOCK":
+    //       return "warning";
+
+    //     case "OUTOFSTOCK":
+    //       return "danger";
+
+    //     default:
+    //       return null;
+    //   }
+    // },
+    // findIndexById(id) {
+    //   let index = -1;
+    //   for (let i = 0; i < this.products.length; i++) {
+    //     if (this.products[i].id === id) {
+    //       index = i;
+    //       break;
+    //     }
+    //   }
+
+    //   return index;
+    // },
+    // createId() {
+    //   let id = "";
+    //   var chars =
+    //     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    //   for (var i = 0; i < 5; i++) {
+    //     id += chars.charAt(Math.floor(Math.random() * chars.length));
+    //   }
+    //   return id;
+    // },
+    // exportCSV() {
+    //   this.$refs.dt.exportCSV();
+    // },
   },
 };
 </script>

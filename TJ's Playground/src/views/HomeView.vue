@@ -1,22 +1,28 @@
 <template>
-  <div>
+  <main>
     <Toast></Toast>
-    <Graphs :activityChartData="activityChartData" :key="refreshComp" />
-    <MilestoneProgress />
-    <EcoFriendlyActivities
+    <DataTable
       :activityData="activityData"
       @added="refresh"
       @deletedActivity="refresh"
       @activityEdited="refresh"
       :key="refreshComp"
     />
-  </div>
+    <!-- <DataTable2 :products="activityData" /> -->
+    <!-- <TheWelcome /> -->
+    <!-- <AddActivityBox />
+    <AddActivity /> -->
+    <!-- <EcoFriendlyActivities /> -->
+  </main>
 </template>
 
 <script>
-import EcoFriendlyActivities from "./dashboard_components/EcoFriendlyActivities.vue";
-import MilestoneProgress from "./dashboard_components/MilestoneProgress.vue";
-import Graphs from "./dashboard_components/Graphs.vue";
+import TheWelcome from "../components/TheWelcome.vue";
+import DataTable from "../components/DataTable.vue";
+import DataTable2 from "../components/DataTable2.vue";
+// import AddActivityBox from "../components/AddActivityBox.vue";
+// import AddActivity from "../components/AddActivity.vue";
+// import EcoFriendlyActivities from "../components/EcoFriendlyActivities.vue";
 import firebaseApp from "@/firebase.js";
 import { getFirestore } from "firebase/firestore";
 import { doc, getDocs, collection } from "firebase/firestore";
@@ -24,10 +30,11 @@ const db = getFirestore(firebaseApp);
 
 export default {
   components: {
-    EcoFriendlyActivities,
-    MilestoneProgress,
-    Graphs,
+    DataTable,
+    DataTable2,
+    TheWelcome,
   },
+
   data() {
     return {
       activityChartData: null,
@@ -87,7 +94,7 @@ export default {
     // this.activityData.forEach((doc) => {
     //   console.log(doc);
     // });
-    // console.log(this.activityData);
+    console.log(this.activityData);
     console.log(
       "activityData and activityChartData has loaded in Dashboard.vue."
     );

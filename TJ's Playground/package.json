@@ -1,5 +1,5 @@
 {
-  "name": "xanadu",
+  "name": "tj-s-playground",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -8,16 +8,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "chart.js": "^4.4.0",
-    "firebase": "^10.4.0",
+    "firebase": "^10.5.0",
     "primeicons": "^6.0.1",
     "primevue": "^3.37.0",
-    "vite-plugin-vuetify": "^1.0.2",
     "vue": "^3.3.4",
-    "vue-chartjs": "^5.2.0",
-    "vue-chartkick": "^1.1.0",
-    "vue-router": "^4.2.4",
-    "vuetify": "^3.3.22"
+    "vue-router": "^4.2.4"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.3.4",
