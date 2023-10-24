@@ -3,7 +3,7 @@ import Dashboard from "../views/DashboardView.vue";
 import Forum from "../views/ForumView.vue";
 import Marketplace from "../views/MarketplaceView.vue";
 
-import Register from "../views/RegisterView.vue"
+import Register from "../views/RegisterView.vue";
 
 import AddProduct from "../views/AddProduct.vue";
 import ProductView from "../views/ProductView.vue";
@@ -14,17 +14,11 @@ import ThreadReply from "../views/ThreadReplyView.vue";
 
 import Cart from "../views/CartView.vue"; // Import the Cart component here
 
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: "/register",
-      name: "register",
-      component: Register,
-    },
-    {
-      path: "/",
+      path: "/dashboard",
       name: "dashboard",
       component: Dashboard,
     },
@@ -37,6 +31,11 @@ const router = createRouter({
       path: "/marketplace",
       name: "marketplace",
       component: Marketplace,
+    },
+    {
+      path: "/register",
+      name: "register",
+      component: Register,
     },
     {
       path: "/AddProduct",
@@ -68,9 +67,8 @@ const router = createRouter({
       path: "/thread/:id/addreply",
       name: "AddReply",
       component: AddReply,
-    }
-
-  ]
+    },
+  ],
 });
 
 export default router;
