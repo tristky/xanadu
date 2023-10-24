@@ -14,7 +14,7 @@
               </div>
               <div class="product-details">
                 <p class="product-title">{{ product.title }}</p>
-                <p class="product-description">{{ product.Desc || 'No description' }}</p>
+                <p class="product-description">{{ product.description || 'No description' }}</p>
               </div>
             </div>
           </RouterLink>
@@ -134,7 +134,7 @@
         fbproducts.push({
           id: doc.id,
           title: doc.data().title,
-          description: doc.data().Desc,
+          description: doc.data().desc,
           picture: doc.data().pictures,
         });
       });

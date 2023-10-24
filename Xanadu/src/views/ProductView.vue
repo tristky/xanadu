@@ -40,7 +40,7 @@
           vm.product = {
             id: productDoc.id,
             title: productData.title,
-            description: productData.description,
+            description: productData.desc,
             picture: productData.pictures
           };
         });
