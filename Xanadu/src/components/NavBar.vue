@@ -18,6 +18,9 @@
         <li>
           <RouterLink to="cart">Cart</RouterLink>
         </li>
+        <li>
+          <RouterLink to="register">Register</RouterLink>
+        </li>
       </ul>
     </div>
   </div>
