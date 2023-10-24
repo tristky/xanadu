@@ -19,6 +19,11 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
+      path: "/register",
+      name: "register",
+      component: Register,
+    },
+    {
       path: "/",
       name: "dashboard",
       component: Dashboard,
@@ -32,11 +37,6 @@ const router = createRouter({
       path: "/marketplace",
       name: "marketplace",
       component: Marketplace,
-    },
-    {
-      path: "/register",
-      name: "register",
-      component: Register,
     },
     {
       path: "/AddProduct",
