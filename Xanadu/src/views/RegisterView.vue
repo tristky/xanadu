@@ -1,4 +1,5 @@
 <template>
+    <h1>This is Register</h1>
     <Register/>
 </template>
 
@@ -6,7 +7,6 @@
 import Register from "../components/Authentication/Register.vue";
 
 export default {
-    name: "Register",
     components:{
         Register
     }

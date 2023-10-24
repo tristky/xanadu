@@ -34,12 +34,11 @@ const router = createRouter({
       component: Marketplace,
     },
     {
-
       path: "/register",
       name: "register",
       component: Register,
-    }
-
+    },
+    {
       path: "/AddProduct",
       name: "AddProduct",
       component: AddProduct,
@@ -54,7 +53,11 @@ const router = createRouter({
       name: "Cart",
       component: Cart,
     },
-    { path: "/AddThread", name: "AddThread", component: AddThread },
+    { 
+      path: "/AddThread", 
+      name: "AddThread", 
+      component: AddThread 
+    },
     {
       path: "/thread/:threadId",
       name: "ThreadReply",
