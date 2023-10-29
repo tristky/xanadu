@@ -1,39 +1,44 @@
 <template>
-  <div class="shipping">
-    <p>Free shipping for all orders!</p>
-  </div>
-  <div class="navbar">
-    <img class="logo" src="../assets/xanadu.png">
-    <ul>
-      <li>
-        <RouterLink to="/">Dashboard</RouterLink>
-      </li>
-      <li>
-        <RouterLink to="marketplace">Marketplace</RouterLink>
-      </li>
-      <li>
-        <RouterLink to="forum">Forum</RouterLink>
-      </li>
-      <li>
-        <RouterLink to="cart">Cart</RouterLink>
-      </li>
-    </ul>
+  <div>
+    <div class="shipping">
+      <p>Free shipping for all orders!</p>
+    </div>
+    <div class="navbar">
+      <img class="logo" src="../assets/xanadu.png" />
+      <ul>
+        <li>
+          <RouterLink to="/dashboard">Dashboard</RouterLink>
+        </li>
+        <li>
+          <RouterLink to="marketplace">Marketplace</RouterLink>
+        </li>
+        <li>
+          <RouterLink to="forum">Forum</RouterLink>
+        </li>
+        <li>
+          <RouterLink to="cart">Cart</RouterLink>
+        </li>
+        <li>
+          <RouterLink to="register">Register</RouterLink>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
-import { RouterLink } from 'vue-router';
+import { RouterLink } from "vue-router";
 
 export default {
   components: {
-    RouterLink
-  }
-}
+    RouterLink,
+  },
+};
 </script>
 
 <style>
 .navbar a.router-link-exact-active {
-  color: #5A6D57;
+  color: #5a6d57;
 }
 
 ul {
@@ -86,6 +91,6 @@ li {
   font-weight: 600;
   line-height: normal;
   letter-spacing: 0.8px;
-  color: var(--White, #FFF);
+  color: var(--White, #fff);
 }
 </style>
